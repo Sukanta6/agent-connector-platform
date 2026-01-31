@@ -3,8 +3,9 @@
 
     "source": {
     "location": "local",
-    "type": "csv",
-    "path": "/Users/yourname/data/input/customers.csv",
+    "type": "orders",
+    "extension": "csv",
+    "path": "/Volumes/Data/Projects/agent-connector-platform/mocks/orders.csv",
     "options": {
     "header": true,
     "delimiter": ","
