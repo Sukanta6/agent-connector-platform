@@ -1,0 +1,22 @@
+{
+    "environment": "local",
+
+    "source": {
+    "location": "local",
+    "type": "csv",
+    "path": "/Users/yourname/data/input/customers.csv",
+    "options": {
+    "header": true,
+    "delimiter": ","
+    }
+    },
+
+    "destination": {
+    "type": "sql",
+    "db_type": "sqlite",
+    "connection": {
+        "database": "local.db"
+    },
+    "table": "customers"
+    }
+}
