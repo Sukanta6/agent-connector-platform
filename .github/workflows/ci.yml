@@ -6,7 +6,8 @@ on:
   pull_request:
 
 jobs:
-  test:
+  quality-gate:
+    name: Quality Gate
     runs-on: ubuntu-latest
 
     steps:
@@ -27,6 +28,6 @@ jobs:
           pip install -r requirements.txt
           pip install -e .
 
-      - name: Run unit tests
+      - name: Run verification suite
         run: |
           pytest --cov=tool_service
