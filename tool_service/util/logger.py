@@ -27,6 +27,14 @@ class MemoryHandler(logging.Handler):
 _memory_handler = MemoryHandler()
 
 
+def save_logs_to_file(filepath: str = "logs/app.log") -> None:
+    """Save all collected logs to a file."""
+    os.makedirs(os.path.dirname(filepath) or ".", exist_ok=True)
+    with open(filepath, "w") as f:
+        for log in _memory_handler.get_logs():
+            f.write(log + "\n")
+
+
 def get_logger(name: str) -> logging.Logger:
     """Get logger that collects logs in memory."""
     logger = logging.getLogger(name)

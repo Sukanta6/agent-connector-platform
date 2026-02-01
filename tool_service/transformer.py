@@ -1,5 +1,7 @@
 from tool_service.util.logger import get_logger
-from tool_service.src.load_csv import CSVLoader
+from tool_service.src.read_csv import CSVLoader
+from tool_service.src.load_sql import SQLDataFrameLoader as SDFL
+
 
 logger = get_logger(__name__)
 
@@ -15,26 +17,21 @@ class DataTransformer:
         source_path = source.get("path")
         table_name = destination.get("table")
 
-        self._log_transform_details(source_path, table_name)
-        return self._build_transform_result(source_path, table_name)
+        data =  self._build_transform_result(source_path)
+        SDFL_instance = SDFL(self.logger, destination)
+        response = SDFL_instance.test_connection()
+        if response.get("success"):
+            self.logger.info(f"Connection to destination successful.")
+            load_response = SDFL_instance.load_dataframe_to_sql(data, table_name)
+            return load_response
+        
+        
+        return response
 
-    def _log_transform_details(self, source_path: str, table_name: str) -> None:
-        """Log transformation details for debugging and save to file."""
-        self.logger.info(f"Source path: {source_path}")
-        self.logger.info(f"Destination table: {table_name}")
-        # Logs are automatically saved to logs/app.log via FileHandler
 
-    def _build_transform_result(self, source_path: str, table_name: str) -> dict:
+
+    def _build_transform_result(self, source_path: str) -> dict:
         """Build transformation result."""
         
         data_csv = CSVLoader(self.logger).load_csv(source_path)
-        return {
-            "message": f"Would transform data from {source_path} into table {table_name}"
-        }
-
-
-# Maintain backward compatibility with existing code
-def transform_data(source: dict, destination: dict) -> dict:
-    """Wrapper function for backward compatibility."""
-    transformer = DataTransformer()
-    return transformer.transform_data(source, destination)
+        return data_csv

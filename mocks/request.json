@@ -14,10 +14,16 @@
 
     "destination": {
     "type": "sql",
-    "db_type": "sqlite",
+    "db_type": "mssql",
+    "database_name": "agentconnector",
     "connection": {
-        "database": "local.db"
+        "database": "agentconnector",
+        "host": "localhost",
+        "port": 1433,
+        "user": "sa",
+        "password": "Asdf@1234"
     },
-    "table": "customers"
+    "table": "orders",
+    "if_exists": "replace"
     }
 }

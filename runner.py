@@ -1,5 +1,5 @@
 import json
-from tool_service.connection import handle_request
+from tool_service.connection import ConnectionHandler as CH
 from tool_service.util.logger import save_logs_to_file
 
 
@@ -15,7 +15,8 @@ class RequestRunner:
     def run(self):
         """Execute the request and return result."""
         request_payload = self.load_request()
-        result = handle_request(request_payload)
+        handler = CH()
+        result = handler.handle_request(request_payload)
         return result
 
 

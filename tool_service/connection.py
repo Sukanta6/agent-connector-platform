@@ -1,4 +1,4 @@
-from tool_service.transformer import transform_data
+from tool_service.transformer import DataTransformer as DT
 from tool_service.util.logger import get_logger
 
 logger = get_logger(__name__)
@@ -19,7 +19,7 @@ class ConnectionHandler:
         self._log_request_details(environment, source, destination)
 
         try:
-            result = transform_data(source, destination)
+            result = DT().transform_data(source, destination)
             return self._success_response(environment, result)
         except Exception as e:
             self.logger.error("Error in connection layer", exc_info=True)
@@ -45,10 +45,3 @@ class ConnectionHandler:
             "status": "failed",
             "error": str(error)
         }
-
-
-# Maintain backward compatibility with existing code
-def handle_request(request: dict) -> dict:
-    """Wrapper function for backward compatibility."""
-    handler = ConnectionHandler()
-    return handler.handle_request(request)
